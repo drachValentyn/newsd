@@ -4,23 +4,44 @@ import styles from "./main.module.css";
 import { getNews } from "../../api/apiNews";
 import NewsList from "../../components/NewsList/NewsList";
 import Skeleton from "../../components/Skeleton/Skeleton";
+import Pagination from "../../components/Pagination/Pagination";
 
 const Main = () => {
   const [news, setNews] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [currentPage, setCurrentPage] = useState(1);
+
+  const totalPages = 10;
+  const pageSize = 10;
 
   useEffect(() => {
-    const fetchNews = async () => {
+    const fetchNews = async (currentPage) => {
       try {
-        const res = await getNews();
+        const res = await getNews(currentPage, pageSize);
         setNews(res.news);
         setIsLoading(false);
       } catch (error) {
         console.log(error);
       }
     }
-    fetchNews();
-  }, []);
+    fetchNews(currentPage);
+  }, [currentPage]);
+
+  const handleNextPage = () => {
+    if (currentPage < totalPages) {
+      setCurrentPage(currentPage + 1);
+    }
+  }
+
+  const handlePrevPage = () => {
+    if (currentPage > 1) {
+      setCurrentPage(currentPage - 1);
+    }
+  }
+
+  const handleCurrentPage = (page) => {
+    setCurrentPage(page);
+  }
 
   return (
     <main className={styles.main}>
@@ -29,11 +50,20 @@ const Main = () => {
           <NewsBanner item={news[0]} /> :
           <Skeleton count={1} type={'banner'} />
       }
+
       {
         !isLoading ?
           <NewsList news={news} /> :
           <Skeleton count={10} type={"item"} />
       }
+
+      <Pagination
+        totalPages={totalPages}
+        currentPage={currentPage}
+        handleNextPage={handleNextPage}
+        handlePrevPage={handlePrevPage}
+        handleCurrentPage={handleCurrentPage}
+      />
     </main>
   )
 }
