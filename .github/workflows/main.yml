@@ -59,7 +59,7 @@ jobs:
           aws elasticbeanstalk wait environment-exists \
             --environment-names "${{ env.EB_ENVIRONMENT_NAME }}"
 
-          aws elasticbeanstalk wait environment-health-ok \
+          aws elasticbeanstalk wait environment-updated \
             --environment-names "${{ env.EB_ENVIRONMENT_NAME }}"
 
           echo "Environment is ready. Creating new application version..."
