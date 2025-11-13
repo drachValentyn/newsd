@@ -39,7 +39,7 @@ jobs:
 
       - name: Package build for deployment 
         run : |
-          zip -r ${{ env.DEPLOY_PACKAGE_NAME }} build packege.json server.js \ -x '*.git*'
+          zip -r ${{ env.DEPLOY_PACKAGE_NAME }} server.js package.json package-lock.json dist -x '*.git*'
 
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v4
