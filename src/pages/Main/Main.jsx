@@ -17,20 +17,6 @@ const Main = () => {
   const totalPages = 10;
   const pageSize = 10;
 
-  const fetchNews = async (currentPage) => {
-    try {
-      const res = await getNews({
-        page_number: currentPage,
-        page_size: pageSize,
-        category: selectedCategory === "All" ? null : selectedCategory,
-      });
-      setNews(res.news);
-      setIsLoading(false);
-    } catch (error) {
-      console.log(error);
-    }
-  }
-
   const fetchCategories = async () => {
     try {
       const response = await getCategories();
@@ -45,6 +31,20 @@ const Main = () => {
   }, []);
 
   useEffect(() => {
+    const fetchNews = async (currentPage) => {
+      try {
+        const res = await getNews({
+          page_number: currentPage,
+          page_size: pageSize,
+          category: selectedCategory === "All" ? null : selectedCategory,
+        });
+        setNews(res.news);
+        setIsLoading(false);
+      } catch (error) {
+        console.log(error);
+      }
+    }
+
     fetchNews(currentPage);
   }, [currentPage, selectedCategory]);
 
