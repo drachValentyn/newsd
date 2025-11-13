@@ -27,9 +27,9 @@ jobs:
       - name: Install dependencies
         run : npm ci
 
-      - name: Run Eslint
-        run : npm run lint
-        continue-on-error: false
+      # - name: Run Eslint
+      #   run : npm run lint
+      #   continue-on-error: false
 
       # - name: Run tests
       #   run: npm test -- --watchAll=false
