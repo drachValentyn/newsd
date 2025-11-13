@@ -9,19 +9,60 @@ env:
 on: 
   push:
     branches:
-      - master
+      - main
       
-
 jobs: 
-  my_ci_part:
-    runs-on: ubuntu-latest
+  ci_cd_pipeline:
+    runs-on : ubuntu-latest
 
     steps:
-      - name: Git clone our repo
-        uses: actions/checkout@v1
+      - name: Checkout repository
+        uses: actions/checkout@v3
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with: 
+          node-version: "20.19.5"
 
-      - name: Create ZIP deployment package 
-        run: zip -r ${{ env.DEPLOY_PACKAGE_NAME }} ./ -x *.git*
+      - name: Install dependencies
+        run : npm ci
 
+      - name: Run Eslint
+        run : npm run lint
+        continue-on-error: false
+
+      # - name: Run tests
+      #   run: npm test -- --watchAll=false
+
+      - name: Build React app
+        run : npm run build
+
+      - name: Package build for deployment 
+        run : |
+          zip -r ${{ env.DEPLOY_PACKAGE_NAME }} build packege.json server.js \ -x '*.git*'
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id     : ${{ secrets.MY_AWS_ACCESS_KEY }}
+          aws-secret-access-key : ${{ secrets.MY_AWS_SECRET_KEY }}
+          aws-region            : ${{ env.AWS_REGION_NAME }}
+      
+      - name: Upload package to S3
+        run : |
+          aws s3 cp ${{ env.DEPLOY_PACKAGE_NAME }} s3://${{ env.EB_PACKAGE_S3_BUCKET_NAME }}/
+
+      - name: Create new Elastic Beanstalk application version
+        run: |
+          aws elasticbeanstalk create-application-version \
+            --application-name "${{ env.EB_APPLICATION_NAME }}" \
+            --version-label "${{ github.sha }}" \
+            --source-bundle S3Bucket="${{ env.EB_PACKAGE_S3_BUCKET_NAME }}",S3Key="${{ env.DEPLOY_PACKAGE_NAME }}"
+
+      - name: Deploy new version to Elastic Beanstalk
+        run: |
+          aws elasticbeanstalk update-environment \
+            --environment-name "${{ env.EB_ENVIRONMENT_NAME }}" \
+            --version-label "${{ github.sha }}"
       
     
