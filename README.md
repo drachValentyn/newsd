@@ -1,6 +1,12 @@
-# React + Vite
+# React + Vite + Express
+
+Status of Last Deployment: <br>
+<img src="https://github.com/drachValentyn/newsd/workflows/CI-CD-Pipeline-to-AWS-ElasticBeanstalk/badge.svg?branch-main">
+<br>
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+
+Add github actions and deploy to AWS and Vercel 
 
 Currently, two official plugins are available:
 
