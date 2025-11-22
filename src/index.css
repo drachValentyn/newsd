@@ -13,11 +13,11 @@
   margin: 0 auto;
 }
 
-.app.dark .container {
+.app.dark {
   background-color: #23272f;
 }
 
-.app.light .container {
+.app.light {
   background-color: white;
 }
 
