@@ -20,10 +20,16 @@
     "strict": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
-    "noFallthroughCasesInSwitch": true
+    "noFallthroughCasesInSwitch": true,
+    "paths": {
+      "@/*": [
+        "./src/*",
+      ]
+    }
   },
   "include": [
-    "src"
+    "src",
+    "src/shared/interfaces/vite-env.d.ts"
   ],
   "references": [
     {
