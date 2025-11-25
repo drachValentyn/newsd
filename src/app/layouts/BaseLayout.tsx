@@ -2,7 +2,7 @@ import { useTheme } from "@/app/providers/ThemeProvider";
 import { Main } from "@/pages/main";
 import { Header } from "@/widget/header/ui";
 
-function BaseLayout() {
+const BaseLayout = () => {
   const { isDark } = useTheme();
 
   return (
