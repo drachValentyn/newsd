@@ -1,6 +1,6 @@
 
+import { NewsByFilters } from "@/widget/news";
 import LatestNews from "./LatestNews/LatestNews";
-import NewsByFilters from "./NewsByFilters/NewsByFilters";
 import styles from "./styles.module.css";
 
 

@@ -1,6 +1,13 @@
-.item {
+.card {
   display: flex;
   width: 100%;
+  gap: 12px;
+}
+
+.banner {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
   gap: 12px;
 }
 
